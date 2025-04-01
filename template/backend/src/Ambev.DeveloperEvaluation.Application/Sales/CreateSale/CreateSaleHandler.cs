@@ -3,6 +3,7 @@ using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.Infrastructure.Mongo.Repositories;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -18,6 +19,8 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
     private readonly IMapper _mapper;
     private readonly ILogger<CreateSaleHandler> _logger;
     private readonly IEventPublisher _eventPublisher;
+    private readonly ISaleReadRepository _saleReadRepository;
+
 
     /// <summary>
     /// Initializes a new instance of CreateSaleHandler
@@ -30,12 +33,15 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         ISaleRepository saleRepository,
         IMapper mapper,
         ILogger<CreateSaleHandler> logger,
-        IEventPublisher eventPublisher)
+        IEventPublisher eventPublisher,
+        ISaleReadRepository saleReadRepository)
     {
         _saleRepository = saleRepository;
         _mapper = mapper;
         _logger = logger;
         _eventPublisher = eventPublisher;
+        _saleReadRepository = saleReadRepository;
+
     }
 
 
@@ -71,6 +77,27 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         sale.CalculateTotalSaleAmount();
 
         var createdSale = await _saleRepository.CreateAsync(sale, cancellationToken);
+
+        var readModel = new Domain.ReadModels.SaleReadModel
+        {
+            Id = createdSale.Id,
+            SaleNumber = createdSale.Id.ToString(), // ou outro número real
+            Date = DateTime.UtcNow,
+            Customer = createdSale.Customer,
+            Branch = createdSale.Branch,
+            TotalAmount = createdSale.TotalSaleAmount,
+            IsCancelled = false,
+            Items = createdSale.Products.Select(p => new Domain.ReadModels.SaleItemReadModel
+            {
+                Product = p.Name,
+                Quantity = p.Quantity,
+                UnitPrice = p.UnitPrice,
+                Total = p.Quantity * p.UnitPrice
+            }).ToList()
+        };
+
+        await _saleReadRepository.AddAsync(readModel, cancellationToken);
+
 
         return new CreateSaleResult { Id = createdSale.Id };
     }

@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ambev.DeveloperEvaluation.Domain\Ambev.DeveloperEvaluation.Domain.csproj" />
+    <ProjectReference Include="..\Ambev.DeveloperEvaluation.Infrastructure.Mongo\Ambev.DeveloperEvaluation.Infrastructure.Mongo.csproj" />
   </ItemGroup>
 
   <ItemGroup>
