@@ -59,7 +59,8 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         {
             Customer = command.Customer,
             Branch = command.Branch,
-            Products = command.Products.Select(p => {
+            Products = command.Products.Select(p =>
+            {
                 ValidateProductQuantity(command.Customer, p.Quantity);
 
                 var productSale = new ProductSale
@@ -130,5 +131,5 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         await _eventPublisher.PublishAsync(saleCreatedEvent, cancellationToken);
     }
 
-  
+
 }
