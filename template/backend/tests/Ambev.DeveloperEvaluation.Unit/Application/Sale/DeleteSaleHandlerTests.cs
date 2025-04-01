@@ -1,5 +1,7 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.DeleteSale;
+﻿using Ambev.DeveloperEvaluation.Application.Eventing;
+using Ambev.DeveloperEvaluation.Application.Sales.DeleteSale;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Xunit;
 
@@ -12,6 +14,8 @@ public class DeleteSaleHandlerTests
 {
     private readonly ISaleRepository _saleRepository;
     private readonly DeleteSaleHandler _handler;
+    private readonly ILogger<DeleteSaleHandler> _logger;
+    private readonly IEventPublisher _eventPublisher;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DeleteSaleHandlerTests"/> class.
@@ -20,7 +24,9 @@ public class DeleteSaleHandlerTests
     public DeleteSaleHandlerTests()
     {
         _saleRepository = Substitute.For<ISaleRepository>();
-        _handler = new DeleteSaleHandler(_saleRepository);
+        _logger = Substitute.For<ILogger<DeleteSaleHandler>>();
+        _eventPublisher = Substitute.For<IEventPublisher>();
+        _handler = new DeleteSaleHandler(_saleRepository, _logger, _eventPublisher);
     }
 
     /// <summary>

@@ -1,8 +1,10 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
+﻿using Ambev.DeveloperEvaluation.Application.Eventing;
+using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Dto;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Xunit;
 
@@ -16,6 +18,8 @@ public class UpdateSaleHandlerTests
     private readonly ISaleRepository _saleRepository;
     private readonly IMapper _mapper;
     private readonly UpdateSaleHandler _handler;
+    private readonly ILogger<UpdateSaleHandler> _logger;
+    private readonly IEventPublisher _eventPublisher;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UpdateSaleHandlerTests"/> class.
@@ -25,7 +29,9 @@ public class UpdateSaleHandlerTests
     {
         _saleRepository = Substitute.For<ISaleRepository>();
         _mapper = Substitute.For<IMapper>();
-        _handler = new UpdateSaleHandler(_saleRepository, _mapper);
+        _logger = Substitute.For<ILogger<UpdateSaleHandler>>();
+        _eventPublisher = Substitute.For<IEventPublisher>();
+        _handler = new UpdateSaleHandler(_saleRepository, _mapper, _logger, _eventPublisher);
     }
 
     /// <summary>
