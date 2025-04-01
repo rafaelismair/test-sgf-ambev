@@ -1,8 +1,10 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+﻿using Ambev.DeveloperEvaluation.Application.Eventing;
+using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Dto;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Xunit;
 
@@ -16,7 +18,8 @@ public class CreateSaleHandlerTests
     private readonly ISaleRepository _saleRepository;
     private readonly IMapper _mapper;
     private readonly CreateSaleHandler _handler;
-
+    private readonly ILogger<CreateSaleHandler> _logger;
+    private readonly IEventPublisher _eventPublisher;
     /// <summary>
     /// Initializes a new instance of the <see cref="CreateSaleHandlerTests"/> class.
     /// Sets up the test dependencies and creates fake data generators.
@@ -25,7 +28,9 @@ public class CreateSaleHandlerTests
     {
         _saleRepository = Substitute.For<ISaleRepository>();
         _mapper = Substitute.For<IMapper>();
-        _handler = new CreateSaleHandler(_saleRepository, _mapper);
+        _logger = Substitute.For<ILogger<CreateSaleHandler>>();
+        _eventPublisher = Substitute.For<IEventPublisher>();
+        _handler = new CreateSaleHandler(_saleRepository, _mapper, _logger, _eventPublisher);
     }
 
     /// <summary>
