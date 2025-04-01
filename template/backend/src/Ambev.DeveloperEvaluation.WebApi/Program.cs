@@ -4,6 +4,8 @@ using Ambev.DeveloperEvaluation.Common.HealthChecks;
 using Ambev.DeveloperEvaluation.Common.Logging;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Common.Validation;
+using Ambev.DeveloperEvaluation.Infrastructure.Mongo.Repositories;
+using Ambev.DeveloperEvaluation.Infrastructure.Mongo.Settings;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
@@ -50,6 +52,12 @@ public class Program
                     typeof(Program).Assembly
                 );
             });
+
+            builder.Services.Configure<MongoSettings>(
+                builder.Configuration.GetSection("MongoSettings"));
+
+            builder.Services.AddScoped<ISaleReadRepository, SaleReadRepository>();
+
 
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
