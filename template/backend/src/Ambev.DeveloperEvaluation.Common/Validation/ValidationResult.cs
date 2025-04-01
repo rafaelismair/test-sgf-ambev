@@ -9,7 +9,7 @@ public class ValidationResultDetail
 
     public ValidationResultDetail()
     {
-        
+
     }
 
     public ValidationResultDetail(ValidationResult validationResult)

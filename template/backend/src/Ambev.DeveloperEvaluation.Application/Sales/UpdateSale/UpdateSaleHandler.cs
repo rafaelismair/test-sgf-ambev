@@ -26,16 +26,16 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
     /// <param name="logger"></param>
     /// <param name="eventPublisher"></param>
     public UpdateSaleHandler(
-         ISaleRepository saleRepository, 
-         IMapper mapper, 
-         ILogger<UpdateSaleHandler> logger, 
+         ISaleRepository saleRepository,
+         IMapper mapper,
+         ILogger<UpdateSaleHandler> logger,
          IEventPublisher eventPublisher)
-     {
-         _saleRepository = saleRepository;
-         _mapper = mapper;
-         _logger = logger;
-         _eventPublisher = eventPublisher;
-     }
+    {
+        _saleRepository = saleRepository;
+        _mapper = mapper;
+        _logger = logger;
+        _eventPublisher = eventPublisher;
+    }
 
     /// <summary>
     /// Handles the UpdateSaleCommand request
@@ -57,7 +57,8 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
 
         sale.Customer = command.Customer;
         sale.Branch = command.Branch;
-        sale.Products = command.Products.Select(p => {
+        sale.Products = command.Products.Select(p =>
+        {
             ValidateProductQuantity(command.Customer, p.Quantity);
 
             var productSale = new ProductSale
