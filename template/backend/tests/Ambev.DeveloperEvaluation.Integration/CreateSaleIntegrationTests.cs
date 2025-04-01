@@ -21,7 +21,7 @@ public class CreateSaleIntegrationTests
     public CreateSaleIntegrationTests()
     {
 
-        var client = new MongoClient("mongodb://localhost:27017");
+        var client = new MongoClient("mongodb://localhost:27017"); 
         var database = client.GetDatabase("SalesDb");
         _collection = database.GetCollection<SaleReadModel>("sales");
 
