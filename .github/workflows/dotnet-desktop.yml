@@ -1,4 +1,4 @@
-name: .NET Desktop
+name: .NET + Mongo CI
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     services:
       mongo:
@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up .NET
+      - name: Setup .NET 8
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
@@ -35,5 +35,5 @@ jobs:
       - name: Build
         run: dotnet build template/backend/Ambev.DeveloperEvaluation.sln --configuration Release --no-restore
 
-      - name: Test
+      - name: Run tests
         run: dotnet test template/backend/Ambev.DeveloperEvaluation.sln --configuration Release --no-build
