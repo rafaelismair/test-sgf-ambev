@@ -20,15 +20,15 @@ public class CreateSaleIntegrationTests
 
     public CreateSaleIntegrationTests()
     {
-        // Setup MongoDB
+
         var client = new MongoClient("mongodb://localhost:27017");
         var database = client.GetDatabase("SalesDb");
         _collection = database.GetCollection<SaleReadModel>("sales");
 
-        // Limpa coleção para garantir ambiente limpo
+
         _collection.DeleteMany(_ => true);
 
-        // Mocks
+
         var saleRepository = Substitute.For<ISaleRepository>();
         var eventPublisher = Substitute.For<IEventPublisher>();
         var mapper = Substitute.For<IMapper>();
@@ -61,11 +61,11 @@ public class CreateSaleIntegrationTests
         // Arrange
         var command = new CreateSaleCommand
         {
-            Customer = "Cliente Teste",
-            Branch = "Filial Teste",
+            Customer = "Customer",
+            Branch = "Branch",
             Products = new List<CreateProductSaleDto>
             {
-                new() { Name = "Produto A", Quantity = 5, UnitPrice = 10.0m }
+                new() { Name = "Product A", Quantity = 5, UnitPrice = 10.0m }
             }
         };
 
@@ -73,7 +73,7 @@ public class CreateSaleIntegrationTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        var saved = await _collection.Find(x => x.Customer == "Cliente Teste").FirstOrDefaultAsync();
+        var saved = await _collection.Find(x => x.Customer == "Customer").FirstOrDefaultAsync();
         saved.Should().NotBeNull();
         saved!.Items.Should().HaveCount(1);
     }

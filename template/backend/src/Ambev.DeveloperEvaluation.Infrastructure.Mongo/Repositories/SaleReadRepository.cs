@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.ReadModels;
 using Ambev.DeveloperEvaluation.Infrastructure.Mongo.Settings;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace Ambev.DeveloperEvaluation.Infrastructure.Mongo.Repositories;
-    public interface ISaleReadRepository
-    {
-        Task AddAsync(SaleReadModel sale, CancellationToken cancellationToken);
-    }
+public interface ISaleReadRepository
+{
+    Task AddAsync(SaleReadModel sale, CancellationToken cancellationToken);
+}
 
 public class SaleReadRepository : ISaleReadRepository
 {
